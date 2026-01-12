@@ -1,5 +1,6 @@
 package com.example.smart_ecommerce.global.exceptions.Handlers;
 
+import com.example.smart_ecommerce.global.exceptions.EmailAlreadyExist;
 import com.example.smart_ecommerce.global.exceptions.ResourceNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,6 +44,16 @@ public class CustomExceptionHandler {
         error.put("path", request.getDescription(false));
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value= EmailAlreadyExist.class)
+    public ResponseEntity<?> handleEmailAlreadyExistException(EmailAlreadyExist ex, WebRequest request){
+        HashMap<String, Object> error = new HashMap<>();
+        error.put("timestamp", new Date());
+        error.put("message", ex.getMessage());
+        error.put("path", request.getDescription(false));
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
 
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<?> handleGlobalException(Exception ex, WebRequest request){
